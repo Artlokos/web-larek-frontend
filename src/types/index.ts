@@ -1,81 +1,60 @@
-export interface AppState {
-    productList?: IProductItems[]; // список товаров
-    selectedProductItem?: IProductItem; // выбранный по умолчанию товар
-    openedModal: AppStateModals | null; // открытое модальное окно
-    basket: IProductItems[]; // корзина одного покупателя
-    basketTotalPrice: number; // общая сумма заказа 
-    customer: Customer; // данные покупателя
-    
-    isOrderReady: boolean;
-    validationError: string|null;
-    badRequest: string|null;
-
-
-    loadProductList(): Promise<void>; // - загрузить список товаров
-    selectProductItem(id:string):void;  // - выбрать один товар из списка
-    openModal (modal: AppStateModals): void; // - открыть карточку товара (модальное окно)
-    openModalBasket (modal: AppStateModals): void; // - открыть корзину модальное окно
-
-    getProductItemInfo(productItem: IProductItem): Promise<void>; // - получить данные о товаре запросом к серверу
-    fillCustomerInfo(customer: Customer):void;
-}
-
-interface IProductItems {
-    logo: string; // логотип в виде ссылки на изображение
-    title: string; // Название сервиса
-    basketLogo: string; // Логотип корзины, ссылка на изображение
-    length: number; // Количество товаров в списке
-}
-
-interface AppStateModals{
-
-}
-
-interface IProductItem {
+// Карточка товара
+export interface IProductItem {
     // Свойства
-    id: string; // = уникальный идентефикатор товара 
+    _id: string; // = уникальный идентефикатор товара 
     title: string; // - Название товара
     description: string // - Описание товара
     image: string; // - Ссылка на изображение товара
     category: string // - Категория товара
     price: number //- Цена товара
-    
-    // Методы
-    
+    _inOrder:boolean // - Состояние добавлен/исключен из корзины
+    // Методы   
 }
 
-interface IProductItem {
-    id: string;
-    description: string;
-    image: string;
-    title: string;
-    category: string;
-    price: number;
-    responseName: string;
-    error: string;
+// Заказ, корзина
+export interface IOrder extends ICustomer {
+    // Свойства
+    _id: string; // - уникальный идентефикатор заказа
+    customer: ICustomer;  // - данные пользователя
+    totalPrice: number; // - общая сумма заказа
+    items: IProductItem[]; // - массив выбранных товаров
+    //Методы
+
 }
 
-interface Order {
-    id: string;
-    payment:string;
-    email: string;
-    phone: string;
-    address: string;
-    total: number;
-    items: IProductItem[];
-    responseName: string;
-    error: string;
+// Данные о покупателе
+export interface ICustomer {
+    email: string; // - электронная почта покупателя
+    phone: string; // - телефон покупателя
+    address: string; // - адрес доставки покупателя
+    payment:string; // - способ  оплаты
+
+    checkValidation(data: Record<keyof TOrderCustomer, string>): boolean // - проверяет объект с данными покупателя на валидность
 }
 
-interface Customer {
-    email: string;
-    phone: string;
-}
-interface OrderResult extends Customer{
-    id:string;
+// Интерфейс для модели карточек 
+
+export interface IProductItemsData {
+    productItem: IProductItem[];
+
 }
 
-interface IProductListAPI {
-    getProductItemList: ()=>Promise<IProductItem[]>;
-    orderFromBasket: (order: Order) => Promise<OrderResult[]>;
+export interface IOrderData {
+    orderItems: IProductItem[]
+    customer: ICustomer
+
+    addProductItem(productItem:IProductItem): void
+    removeProductItem(productItemId:string, payload: Function | null): void
+    countTotalPrice(chosenProductItems:IProductItem[]) : number
+    orderToDone():void
+    setCustomerData(customer:ICustomer):void
 }
+
+// Данные для создания новой карточки товара
+export type TProductItemInfo = Pick<IProductItem,'title' | 'description' | 'image' | 'category' | 'price'>;
+
+// Данные для создания заказа из корзины
+export type TOrderMain = Pick<IOrder, 'items'>;
+
+// Данные электронной почты, телефона покупателя, способа оплаты и адреса доставки
+export type TOrderCustomer = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'address'>;
