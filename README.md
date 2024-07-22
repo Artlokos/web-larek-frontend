@@ -58,7 +58,7 @@ interface IProductItem {
 ```
 Заказ
 ```
-interface Order {
+interface IOrder {
     id: string;
     customer: ICustomer;
     totalPrice: number
@@ -112,7 +112,7 @@ type TOrderCustomer = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'address'>
 ### Слой данных
 
 #### Класс CardsData
-Класс отвечает за хранение и логику работы с данными карточек созданных пользователями.\
+Класс отвечает за хранение и логику работы с данными карточек товаров.\
 Конструктор класса принимает инстант брокера событий\
 Данные полей класса:
 - productItems: IProductItem[] - массив объектов карточек товара

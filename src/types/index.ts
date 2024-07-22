@@ -1,3 +1,9 @@
+
+//Интерфейс списка товаров
+export interface IProductItemsData {
+    productItems: IProductItem[];
+}
+
 // Карточка товара
 export interface IProductItem {
     // Свойства
@@ -8,11 +14,10 @@ export interface IProductItem {
     category: string // - Категория товара
     price: number //- Цена товара
     _inOrder:boolean // - Состояние добавлен/исключен из корзины
-    // Методы   
 }
 
 // Заказ, корзина
-export interface IOrder extends ICustomer {
+export interface IOrder {
     // Свойства
     _id: string; // - уникальный идентефикатор заказа
     customer: ICustomer;  // - данные пользователя
@@ -21,11 +26,10 @@ export interface IOrder extends ICustomer {
     //Методы
 
 }
-
 // Данные о покупателе
 export interface ICustomer {
     email: string; // - электронная почта покупателя
-    phone: string; // - телефон покупателя
+    telephone: string; // - телефон покупателя
     address: string; // - адрес доставки покупателя
     payment:string; // - способ  оплаты
 
@@ -33,11 +37,6 @@ export interface ICustomer {
 }
 
 // Интерфейс для модели карточек 
-
-export interface IProductItemsData {
-    productItem: IProductItem[];
-
-}
 
 export interface IOrderData {
     orderItems: IProductItem[]
@@ -57,4 +56,4 @@ export type TProductItemInfo = Pick<IProductItem,'title' | 'description' | 'imag
 export type TOrderMain = Pick<IOrder, 'items'>;
 
 // Данные электронной почты, телефона покупателя, способа оплаты и адреса доставки
-export type TOrderCustomer = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'address'>;
+export type TOrderCustomer = Pick<ICustomer, 'email' | 'telephone' | 'payment' | 'address'>;
