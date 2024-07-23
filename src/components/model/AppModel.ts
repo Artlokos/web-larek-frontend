@@ -1,14 +1,16 @@
+import { ProductItem } from "./ProductItemModel";
+import { IOrderData } from "../../types";
 export interface IAppState {
     // Корзина с товарами
-    basket: Product[];
+    basket: ProductItem[];
     // Массив карточек товара
-    store: Product[];
+    productItemList: ProductItem[];
     // Информация о заказе при покупке товара
-    order: IOrder;
+    order: IOrderData;
     // Ошибки при заполнении форм
     formErrors: FormErrors;
     // Метод для добавления товара в корзину
-    addToBasket(value: Product): void;
+    addToBasket(value: ProductItem): void;
     // Метод для удаления товара из корзины
     deleteFromBasket(id: string): void;
     // Метод для полной очистки корзины
@@ -28,7 +30,7 @@ export interface IAppState {
     // Очистить order после покупки товаров
     refreshOrder(): boolean;
     // Метод для превращения данных, полученых с сервера в тип данных приложения
-    setStore(items: IProduct[]): void;
+    setproductItemList(items: IProduct[]): void;
     // Метод для обновления поля selected во всех товарах после совершения покупки
     resetSelected(): void;
   }

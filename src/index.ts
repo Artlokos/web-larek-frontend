@@ -1,4 +1,3 @@
-import { OrderData } from './components/base/OrderData';
 import { Api } from './components/base/api';
 import { EventEmitter } from './components/base/events';
 import './scss/styles.scss';
@@ -16,15 +15,15 @@ const basket = new BasketModel(events);
 events.on('basket:change', (data: {items:string[]}) => {
 });
 
-interface IProduct {
+interface IProductItem {
     id: string;
     title: string;
 }
 
-interface CatalogModel {
-    items:IProduct[];
-    setItems(items:IProduct[]): void;
-    getProduct(id:string):IProduct;
+interface IProductItemListModel {
+    items:IProductItem[];
+    setItems(items:IProductItem[]): void;
+    getProduct(id:string):IProductItem;
 }
 
 interface IViewConstructor {
@@ -75,10 +74,9 @@ class BasketView implements IView {
     }
 }
 
-const api = new API();
+const api = new Api();
 const basketView = new BasketView(document.querySelector('.basket'));
 const basketModel = new BasketModel(events);
-// const catalogModel = new CatalogModel(events);
 
 
 events.on('ui:basket-add', (event:{id:string}) => {

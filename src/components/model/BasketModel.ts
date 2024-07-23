@@ -1,3 +1,4 @@
+import { EventEmitter } from "../base/events";
 interface IBasketModel {
     items: Map<string,number>;
     add(id: string):void;
@@ -5,7 +6,7 @@ interface IBasketModel {
 }
 
 class BasketModel implements IBasketModel {
-    constructor(protected events: IEventEmitter) {}
+    constructor(protected events: EventEmitter) {}
 
     items: Map<string,number> = new Map();
 
