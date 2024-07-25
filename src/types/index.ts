@@ -1,3 +1,4 @@
+import { ApiPostMethods } from './../components/base/api';
 
 //Интерфейс списка товаров
 export interface IProductItemsData {
@@ -7,25 +8,30 @@ export interface IProductItemsData {
 // Карточка товара
 export interface IProductItem {
     // Свойства
-    _id: string; // = уникальный идентефикатор товара 
     title: string; // - Название товара
     description: string // - Описание товара
     image: string; // - Ссылка на изображение товара
     category: string // - Категория товара
     price: number //- Цена товара
-    _inOrder:boolean // - Состояние добавлен/исключен из корзины
 }
 
 // Заказ, корзина
 export interface IOrder {
-    // Свойства
-    _id: string; // - уникальный идентефикатор заказа
-    customer: ICustomer;  // - данные пользователя
-    totalPrice: number; // - общая сумма заказа
-    items: IProductItem[]; // - массив выбранных товаров
-    //Методы
-
+    customer: ICustomer  // - данные пользователя
+    orderItems: IProductItem[] // - список выбранных товаров
 }
+
+// Интерфейс для модели карточек 
+export interface IOrderData {
+    orderItems: IProductItem[]
+    customer: ICustomer
+
+    addProductItem(productItem:IProductItem): void
+    removeProductItem(productItemId:string, payload: null): void
+    // getOrder():IOrder
+    // setCustomerData(customer:ICustomer):void
+}
+
 // Данные о покупателе
 export interface ICustomer {
     email: string; // - электронная почта покупателя
@@ -36,19 +42,6 @@ export interface ICustomer {
     checkValidation(data: Record<keyof TOrderCustomer, string>): boolean // - проверяет объект с данными покупателя на валидность
 }
 
-// Интерфейс для модели карточек 
-
-export interface IOrderData {
-    orderItems: IProductItem[]
-    customer: ICustomer
-
-    addProductItem(productItem:IProductItem): void
-    removeProductItem(productItemId:string, payload: Function | null): void
-    countTotalPrice(chosenProductItems:IProductItem[]) : number
-    orderToDone():void
-    setCustomerData(customer:ICustomer):void
-}
-
 // Данные для создания новой карточки товара
 export type TProductItemInfo = Pick<IProductItem,'title' | 'description' | 'image' | 'category' | 'price'>;
 
@@ -57,3 +50,10 @@ export type TOrderMain = Pick<IOrder, 'items'>;
 
 // Данные электронной почты, телефона покупателя, способа оплаты и адреса доставки
 export type TOrderCustomer = Pick<ICustomer, 'email' | 'telephone' | 'payment' | 'address'>;
+
+//Тип объекта для запроса к серверу 
+export interface IApi {
+    baseUrl: string
+    get<T>(uri:string): Promise<T>
+    post<T>(uri:string, data:object, method?: ApiPostMethods): Promise<T>
+}
