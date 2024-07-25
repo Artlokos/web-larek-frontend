@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { IEvents } from "../base/events";
 import { ICustomer, IOrder, IProductItem} from "../../types";
 import { IOrderData } from "../../types";
@@ -57,4 +58,17 @@ class OrderModel implements IOrderData {
     //     return {this.customer, this.orderItems}
     // }
 
+=======
+import { ICustomer, IOrder, IProductItem } from "../../types";
+
+export class Order implements IOrder {
+    id: string;
+    customer: ICustomer;
+    totalPrice: number;
+    items: IProductItem[];
+
+    constructor () {
+        
+    }
+>>>>>>> e006b4516a1d83a912fc81c252261882ba880151
 }

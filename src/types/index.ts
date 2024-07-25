@@ -2,23 +2,41 @@ import { ApiPostMethods } from './../components/base/api';
 
 //Интерфейс списка товаров
 export interface IProductItemsData {
-    productItems: IProductItem[];
+    productItems: IProductItem[]; // - список карточек с сервера
 }
 
 // Карточка товара
 export interface IProductItem {
     // Свойства
+<<<<<<< HEAD
+=======
+    id: string; // = уникальный идентефикатор товара 
+>>>>>>> e006b4516a1d83a912fc81c252261882ba880151
     title: string; // - Название товара
     description: string // - Описание товара
     image: string; // - Ссылка на изображение товара
     category: string // - Категория товара
     price: number //- Цена товара
+<<<<<<< HEAD
+=======
+    inOrder:boolean // - Состояние добавлен/исключен из корзины
+>>>>>>> e006b4516a1d83a912fc81c252261882ba880151
 }
 
 // Заказ, корзина
 export interface IOrder {
+<<<<<<< HEAD
     customer: ICustomer  // - данные пользователя
     orderItems: IProductItem[] // - список выбранных товаров
+=======
+    // Свойства
+    id: string; // - уникальный идентефикатор заказа
+    customer: ICustomer;  // - данные пользователя
+    totalPrice: number; // - общая сумма заказа
+    items: IProductItem[]; // - массив выбранных товаров
+    //Методы
+
+>>>>>>> e006b4516a1d83a912fc81c252261882ba880151
 }
 
 // Интерфейс для модели карточек 
