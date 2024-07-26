@@ -1,7 +1,8 @@
-<<<<<<< HEAD
+
 import { IEvents } from "../base/events";
-import { ICustomer, IOrder, IProductItem} from "../../types";
+import { ICustomer, IOrder, IProductItem, TOrderCustomer} from "../../types";
 import { IOrderData } from "../../types";
+import { ProductItemModel } from "./ProductItemModel";
 
 class OrderModel implements IOrderData {
 
@@ -10,7 +11,9 @@ class OrderModel implements IOrderData {
     orderItems: IProductItem []
     customer: ICustomer
 
-    getProductItem(id:string):IProductItem
+    getProductItem(id:string) {
+        return ProductItemModel
+    }
         
     addProductItem(productItem:IProductItem):void { 
         if(!this.orderItems.find((item) => {
@@ -54,19 +57,9 @@ class OrderModel implements IOrderData {
     get customerInfo() {
         return this.customer
     }
-    // getOrder(): IOrder {
-    //     return {this.customer, this.orderItems}
-    // }
-
-
-}
-export class Order implements IOrder {
-    id: string;
-    customer: ICustomer;
-    totalPrice: number;
-    items: IProductItem[];
-
-    constructor () {
-        
+    
+    checkInput(data:{field:keyof TOrderCustomer; value:string}) {
+         return data.value == '' ? true : false
     }
+    
 }
