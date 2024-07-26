@@ -58,9 +58,8 @@ class OrderModel implements IOrderData {
     //     return {this.customer, this.orderItems}
     // }
 
-=======
-import { ICustomer, IOrder, IProductItem } from "../../types";
 
+}
 export class Order implements IOrder {
     id: string;
     customer: ICustomer;
@@ -70,5 +69,4 @@ export class Order implements IOrder {
     constructor () {
         
     }
->>>>>>> e006b4516a1d83a912fc81c252261882ba880151
 }
