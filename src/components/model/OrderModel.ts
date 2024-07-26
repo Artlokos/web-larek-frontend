@@ -1,6 +1,6 @@
 
 import { IEvents } from "../base/events";
-import { ICustomer, IOrder, IProductItem} from "../../types";
+import { ICustomer, IOrder, IProductItem, TOrderCustomer} from "../../types";
 import { IOrderData } from "../../types";
 import { ProductItemModel } from "./ProductItemModel";
 
@@ -57,7 +57,9 @@ class OrderModel implements IOrderData {
     get customerInfo() {
         return this.customer
     }
-    // getOrder(): IOrder {
-    //     return {this.customer, this.orderItems}
-    // }
+    
+    checkInput(data:{field:keyof TOrderCustomer; value:string}) {
+         return data.value == '' ? true : false
+    }
+    
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { IProductItem } from "../../types";
 import { IEvents } from "../base/events";
 export class ProductItemModel implements IProductItem{
@@ -49,27 +48,4 @@ export class ProductItemModel implements IProductItem{
         this._price = a
         this.events.emit('cards:changed')
     }
-
-=======
-import { Customer } from "./Customer"
-import { IProductItem } from "../../types"
-
-export class ProductItem implements IProductItem {
-    id: string
-    title: string
-    description: string
-    image:string
-    category: string
-    price: number
-    customer: Customer
-    inOrder: boolean
-
-    constructor() {
-        
-    }
-
-    get (){
-        return true
-    }
->>>>>>> e006b4516a1d83a912fc81c252261882ba880151
 }
