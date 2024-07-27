@@ -5,34 +5,17 @@ import { EventEmitter } from './components/base/events';
 import { Customer } from './components/model/CustomerData';
 import { OrderModel } from './components/model/OrderModelData';
 import { ProductItemList } from './components/model/ProductItemsData';
+import { ProductItemView } from './components/view/ProductItemView';
 import './scss/styles.scss';
 import { IApi } from './types';
 import { API_URL } from './utils/constants';
+import { testCardList } from './utils/tempForTest';
 
 const events = new EventEmitter();
 
 const testproductItemList = new ProductItemList(events)
 
-const testCardList = [
-    {
-        "id": "1",
-        "title": "table",
-        "description": "wooden table",
-        "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
-        "category": "furniture",
-        "price": 20000
 
-    },
-    
-    {
-        "id": "2",
-        "title": "chair",
-        "description": "soft chair",
-        "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
-        "category": "furniture",
-        "price": 10000
-    }
-]
 
 
 
@@ -40,17 +23,29 @@ const baseApi: IApi = new Api(API_URL)
 const api = new AppApi(baseApi)
 
 const cardList = Promise.all([api.getProductItemList()])
-    .then(([items]) => {
-        testproductItemList.productItemList = items
-        console.log(testproductItemList)
+    .then(([res]) => {
+        console.log()
+        testproductItemList.productItemList = res
+        // console.log(testproductItemList)
         // console.log(testproductItemList.productItemList)
         // console.log(testproductItemList.getProductItem("854cef69-976d-4c2a-a18c-2aa45046c390"))
+        const cardView = new ProductItemView(cardTemplate, events)
+
+        testproductItemList.productItemList.forEach((card)=>gallery.append(cardView.render()))
     })
     .catch((err) =>{
         console.log(err)
     })
 
-console.log (cardList)
+// console.log (cardList)
+
+const cardTemplate: HTMLTemplateElement = document.querySelector('#card-preview')
+const gallery = document.querySelector('.gallery')
+
+// const card = new ProductItemView(cardTemplate, events)
+// console.log(card)
+// console.log(card.id)
+// gallery.append(card.render())
 
 
 
