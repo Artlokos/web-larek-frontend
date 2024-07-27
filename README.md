@@ -47,6 +47,7 @@ yarn build
 Карточка товара
 ```
 interface IProductItem {
+    id: string; // - идентефикатор товара
     title: string; // - Название товара
     description: string // - Описание товара
     image: string; // - Ссылка на изображение товара

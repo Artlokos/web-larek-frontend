@@ -1,15 +1,38 @@
-import { Api } from './components/base/api';
+// import { Api } from './components/base/api';
 import { EventEmitter } from './components/base/events';
-import { ProductItemModel } from './components/model/ProductItemModel';
+import { ProductItemList } from './components/model/ProductItemsData';
 import './scss/styles.scss';
 
 const events = new EventEmitter();
 
-const productItemList = new ProductItemModel(events)
+const testproductItemList = new ProductItemList(events)
 
 const testCardList = [
+    {
+        "id": "1",
+        "title": "table",
+        "description": "wooden table",
+        "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
+        "category": "furniture",
+        "price": 20000
+    },
     
+    {
+        "id": "2",
+        "title": "chair",
+        "description": "soft chair",
+        "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
+        "category": "furniture",
+        "price": 10000
+    }
 ]
+
+testproductItemList.productItemList = testCardList
+
+console.log(testproductItemList.getProductItem("1"))
+
+console.log(testproductItemList.productItemList)
+
 
 
 

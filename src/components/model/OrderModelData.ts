@@ -2,7 +2,7 @@
 import { IEvents } from "../base/events";
 import { ICustomer, IOrder, IProductItem, TOrderCustomer} from "../../types";
 import { IOrderData } from "../../types";
-import { ProductItemModel } from "./ProductItemModel";
+// import { ProductItemModel } from "./ProductItemsData";
 
 class OrderModel implements IOrderData {
 
@@ -11,9 +11,9 @@ class OrderModel implements IOrderData {
     orderItems: IProductItem []
     customer: ICustomer
 
-    getProductItem(id:string) {
-        return ProductItemModel
-    }
+    // getProductItem(id:string) {
+    //     return ProductItemModel
+    // }
         
     addProductItem(productItem:IProductItem):void { 
         if(!this.orderItems.find((item) => {
@@ -23,11 +23,11 @@ class OrderModel implements IOrderData {
         this._changed();
     }
     removeProductItem(id: string): void {
-        if (!this.items.has(id)) return;
-        if(this.items.get(id)!>0) {
-            this.items.set(id,this.items.get(id)!-1);
-            if(this.items.get(id) === 0) this.items.delete(id);
-        }
+        // if (!this.items.has(id)) return;
+        // if(this.items.get(id)!>0) {
+        //     this.items.set(id,this.items.get(id)!-1);
+        //     if(this.items.get(id) === 0) this.items.delete(id);
+        // }
         this._changed();
     }
     protected _changed(){

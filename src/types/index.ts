@@ -1,13 +1,14 @@
 import { ApiPostMethods } from './../components/base/api';
 
 //Интерфейс списка товаров
-export interface IProductItemsData {
-    productItems: IProductItem[]; // - список карточек с сервера
+export interface IProductItemListData {
+    productItemList: IProductItem[]; // - список карточек с сервера
+    getProductItem(id:string):IProductItem // - получение данных карточки товара по id
 }
 // Карточка товара
 export interface IProductItem {
     // Свойства
-    id: string; // = уникальный идентефикатор товара 
+    id:string // - идентефикатор товара
     title: string; // - Название товара
     description: string // - Описание товара
     image: string; // - Ссылка на изображение товара
@@ -17,9 +18,11 @@ export interface IProductItem {
 
 // Заказ, корзина
 export interface IOrder {
-    // Свойства
-    customer: ICustomer;  // - данные пользователя
     items: IProductItem[]; // - массив выбранных товаров
+    email: string; // - электронная почта покупателя
+    telephone: string; // - телефон покупателя
+    address: string; // - адрес доставки покупателя
+    payment:string; // - способ  оплаты
 }
 
 // Интерфейс для модели карточек 
