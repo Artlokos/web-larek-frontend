@@ -14,6 +14,7 @@ export interface IProductItem {
     image: string; // - Ссылка на изображение товара
     category: string // - Категория товара
     price: number // - Цена товара
+    items: IProductItem[]
     // inOrder:boolean // - статус товара (в заказе или нет)
 }
 

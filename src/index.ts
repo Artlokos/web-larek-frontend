@@ -34,7 +34,7 @@ const testCardList = [
     }
 ]
 
-testproductItemList.productItemList = testCardList
+// testproductItemList.productItemList = testCardList
 
 // console.log(testproductItemList.getProductItem("1"))
 
@@ -49,13 +49,15 @@ const api = new AppApi(baseApi)
 Promise.all([api.getProductItemList()])
     .then(([items]) => {
         testproductItemList.productItemList = items
+        console.log(testproductItemList)
         console.log(testproductItemList.productItemList)
+        // console.log(testproductItemList.getProductItem("854cef69-976d-4c2a-a18c-2aa45046c390"))
     })
     .catch((err) =>{
         console.log(err)
     })
 
-
+// console.log(testproductItemList.getProductItem("854cef69-976d-4c2a-a18c-2aa45046c390"))
 
 
 
