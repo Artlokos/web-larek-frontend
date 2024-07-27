@@ -34,19 +34,12 @@ const testCardList = [
     }
 ]
 
-// testproductItemList.productItemList = testCardList
 
-// console.log(testproductItemList.getProductItem("1"))
-
-
-
-// const testCustomer = new Customer("1@1.1","+7","Street","cash")
-// console.log(testCustomer)
 
 const baseApi: IApi = new Api(API_URL)
 const api = new AppApi(baseApi)
 
-Promise.all([api.getProductItemList()])
+const cardList = Promise.all([api.getProductItemList()])
     .then(([items]) => {
         testproductItemList.productItemList = items
         console.log(testproductItemList)
@@ -57,7 +50,7 @@ Promise.all([api.getProductItemList()])
         console.log(err)
     })
 
-// console.log(testproductItemList.getProductItem("854cef69-976d-4c2a-a18c-2aa45046c390"))
+console.log (cardList)
 
 
 
@@ -95,8 +88,14 @@ Promise.all([api.getProductItemList()])
 
 
 
+// testproductItemList.productItemList = testCardList
+
+// console.log(testproductItemList.getProductItem("1"))
 
 
+
+// const testCustomer = new Customer("1@1.1","+7","Street","cash")
+// console.log(testCustomer)
 
 
 
