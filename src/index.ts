@@ -1,7 +1,13 @@
 // import { Api } from './components/base/api';
+import { AppApi } from './components/AppApi';
+import { Api } from './components/base/api';
 import { EventEmitter } from './components/base/events';
+import { Customer } from './components/model/CustomerData';
+import { OrderModel } from './components/model/OrderModelData';
 import { ProductItemList } from './components/model/ProductItemsData';
 import './scss/styles.scss';
+import { IApi } from './types';
+import { API_URL } from './utils/constants';
 
 const events = new EventEmitter();
 
@@ -15,6 +21,7 @@ const testCardList = [
         "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
         "category": "furniture",
         "price": 20000
+
     },
     
     {
@@ -29,9 +36,34 @@ const testCardList = [
 
 testproductItemList.productItemList = testCardList
 
-console.log(testproductItemList.getProductItem("1"))
+// console.log(testproductItemList.getProductItem("1"))
 
-console.log(testproductItemList.productItemList)
+
+
+// const testCustomer = new Customer("1@1.1","+7","Street","cash")
+// console.log(testCustomer)
+
+const baseApi: IApi = new Api(API_URL)
+const api = new AppApi(baseApi)
+
+Promise.all([api.getProductItemList()])
+    .then(([items]) => {
+        testproductItemList.productItemList = items
+        console.log(testproductItemList.productItemList)
+    })
+    .catch((err) =>{
+        console.log(err)
+    })
+
+
+
+
+
+
+
+
+
+
 
 
 

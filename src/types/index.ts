@@ -13,7 +13,8 @@ export interface IProductItem {
     description: string // - Описание товара
     image: string; // - Ссылка на изображение товара
     category: string // - Категория товара
-    price: number //- Цена товара
+    price: number // - Цена товара
+    // inOrder:boolean // - статус товара (в заказе или нет)
 }
 
 // Заказ, корзина

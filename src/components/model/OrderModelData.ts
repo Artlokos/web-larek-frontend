@@ -4,7 +4,7 @@ import { ICustomer, IOrder, IProductItem, TOrderCustomer} from "../../types";
 import { IOrderData } from "../../types";
 // import { ProductItemModel } from "./ProductItemsData";
 
-class OrderModel implements IOrderData {
+export class OrderModel implements IOrderData {
 
     constructor(protected events: IEvents) {}
 
