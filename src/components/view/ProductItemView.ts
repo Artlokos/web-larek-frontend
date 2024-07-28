@@ -1,3 +1,4 @@
+import { IProductItem } from "../../types"
 import { cloneTemplate } from "../../utils/utils"
 import { IEvents } from "../base/events"
 
@@ -30,7 +31,7 @@ export class ProductItemView {
 
         this.inOrderButton.addEventListener('click', ()=>{this.events.emit('productItem:toOrder',{productItem: this})})
 
-        this.outOrderButton.addEventListener('click', ()=>{this.events.emit('productItem:outOfOrder',{productItem:this})})
+        // this.outOrderButton.addEventListener('click', ()=>{this.events.emit('productItem:outOfOrder',{productItem:this})})
 
     }
 

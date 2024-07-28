@@ -23,24 +23,29 @@ const baseApi: IApi = new Api(API_URL)
 const api = new AppApi(baseApi)
 
 const cardList = Promise.all([api.getProductItemList()])
-    .then(([items]) => {
-        testproductItemList.productItemList = items
-        console.log(testproductItemList)
-        console.log(testproductItemList.productItemList)
+    .then(([res]) => {
+        console.log()
+        testproductItemList.productItemList = res
+        // console.log(testproductItemList)
+        // console.log(testproductItemList.productItemList)
         // console.log(testproductItemList.getProductItem("854cef69-976d-4c2a-a18c-2aa45046c390"))
+        const cardView = new ProductItemView(cardTemplate, events)
+
+        testproductItemList.productItemList.forEach((card)=>gallery.append(cardView.render()))
     })
     .catch((err) =>{
         console.log(err)
     })
 
-console.log (cardList)
+// console.log (cardList)
 
 const cardTemplate: HTMLTemplateElement = document.querySelector('#card-preview')
 const gallery = document.querySelector('.gallery')
 
-const card = new ProductItemView(cardTemplate, events)
-
-gallery.append(card.render(testCardList[0]))
+// const card = new ProductItemView(cardTemplate, events)
+// console.log(card)
+// console.log(card.id)
+// gallery.append(card.render())
 
 
 
