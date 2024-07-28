@@ -5,34 +5,17 @@ import { EventEmitter } from './components/base/events';
 import { Customer } from './components/model/CustomerData';
 import { OrderModel } from './components/model/OrderModelData';
 import { ProductItemList } from './components/model/ProductItemsData';
+import { ProductItemView } from './components/view/ProductItemView';
 import './scss/styles.scss';
 import { IApi } from './types';
 import { API_URL } from './utils/constants';
+import { testCardList } from './utils/tempForTest';
 
 const events = new EventEmitter();
 
 const testproductItemList = new ProductItemList(events)
 
-const testCardList = [
-    {
-        "id": "1",
-        "title": "table",
-        "description": "wooden table",
-        "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
-        "category": "furniture",
-        "price": 20000
 
-    },
-    
-    {
-        "id": "2",
-        "title": "chair",
-        "description": "soft chair",
-        "image": "https://links-stroy.ru/wp-content/uploads/2018/12/derevyannyj-kuhonnyj-stol-13.jpg",
-        "category": "furniture",
-        "price": 10000
-    }
-]
 
 
 
@@ -51,6 +34,13 @@ const cardList = Promise.all([api.getProductItemList()])
     })
 
 console.log (cardList)
+
+const cardTemplate: HTMLTemplateElement = document.querySelector('#card-preview')
+const gallery = document.querySelector('.gallery')
+
+const card = new ProductItemView(cardTemplate, events)
+
+gallery.append(card.render(testCardList[0]))
 
 
 
