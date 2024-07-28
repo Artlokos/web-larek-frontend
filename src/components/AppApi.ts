@@ -1,4 +1,4 @@
-import { IApi, IProductItem, IProductItemListData } from "../types";
+import { IApi, IProductItem } from "../types";
 
 export class AppApi {
     private _baseApi: IApi
@@ -8,6 +8,6 @@ export class AppApi {
     }
 
     getProductItemList() {
-        return this._baseApi.get<IProductItem>('/product').then((productItemList: IProductItem) => productItemList.items)
+        return this._baseApi.get<{total: number, items: IProductItem[]}>('/product').then((res: {total: number, items: IProductItem[]}) => res.items)
     }
 }
