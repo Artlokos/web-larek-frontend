@@ -43,7 +43,7 @@ export class Basket extends MainComponent<IBasket> {
   }
 
   // Метод для обновления индексов таблички при удалении товара из корзины
-  refreshIndices() {
+  refreshCountInBasket() {
     Array.from(this._list.children).forEach(
       (item, index) =>
       (item.querySelector(`.basket__item-index`)!.textContent = (

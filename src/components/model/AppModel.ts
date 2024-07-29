@@ -32,7 +32,7 @@ export class AppModel extends MainModel<IAppModel>{
     this.basketItem.push(value);
   }
 
-  fromBasket(id: string) {
+  outOfBasket(id: string) {
     this.basketItem = this.basketItem.filter(item => item.id !== id)
   }
 
@@ -43,7 +43,7 @@ export class AppModel extends MainModel<IAppModel>{
   getItemsInOrderList() {
     return this.basketItem.length;
   }
-  
+
   getTotalBasketPrice() {
     return this.basketItem.reduce((sum:number, next) => sum + next.price, 0);
   }

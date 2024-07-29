@@ -68,6 +68,11 @@ export type TOrderCustomer = Pick<ICustomer, 'email' | 'telephone' | 'payment' |
 // Данные для проверки полей формы
 export type FormErrors = Partial<Record<keyof IOrderForm, string>>;
 
+// Тип для отправки заказа на сервер
+export type OrderResponse<Type> = {
+    total: number;
+    items: Type[];
+  };
 //Тип объекта для запроса к серверу 
 export interface IApi {
     baseUrl: string
@@ -120,4 +125,8 @@ export interface IBasket {
 
 export interface IPopupView{
     content: HTMLElement
+  }
+export interface IForm {
+    valid: boolean;
+    errors: string[];
   }
