@@ -28,5 +28,13 @@ export class MainPage extends MainComponent<IPage> {
         this.setText(this._counter, String(value))
     }
 
+    set locked(value: boolean) {
+        if (value) {
+          this._wrapper.classList.add('page__wrapper_locked');
+        } else {
+          this._wrapper.classList.remove('page__wrapper_locked');
+        }
+      }
+
 }
 

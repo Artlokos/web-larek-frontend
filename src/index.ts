@@ -8,7 +8,7 @@ import { ProductItemList } from './components/model/ProductItemsData'
 import { MainPage } from './components/view/MainPageView'
 import { ListItem, ListItemOpened } from './components/view/ProductItemView'
 import './scss/styles.scss'
-import { IApi, IProductItem,ICustomer, OrderResponse } from './types'
+import { IApi, IProductItem,ICustomer, OrderResponse, IOrderForm, IOrder } from './types'
 import { API_URL } from './utils/constants'
 import { testCardList } from './utils/tempForTest'
 import { ensureElement, cloneTemplate } from './utils/utils'
@@ -49,7 +49,7 @@ const order = new Order('order', cloneTemplate(orderTemplate), events)
 const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
 const success = new Success('order-success', cloneTemplate(successTemplate), {
   onClick: () => {
-    events.emit('modal:close')
+    events.emit('popup:close')
     popup.close()
   }
 })
@@ -70,7 +70,7 @@ events.on('items:changed', () => {
   })
 
 events.on('card:select', (item: ProductItem) => {
-    // mainPage.locked = true;
+    mainPage.locked = true
     const product = new ListItemOpened(cloneTemplate(cardPreviewTemplate), {
       onClick: () => {events.emit('card:toBasket', item)}})
     popup.render({
@@ -102,7 +102,7 @@ events.on('basket:delete', (item: ProductItem) => {
   })
 
 events.on('basket:open', () => {
-    // mainPage.locked = true
+    mainPage.locked = true
     const basketItems = appModel.basketItem.map((item, index) => {
       const ListItem = new StoreItemBasket(
         'card',
@@ -132,14 +132,13 @@ events.on('orderFormErrors:change', (errors: Partial<ICustomer>) => {
     order.valid = !payment && !address
     order.errors = Object.values({ payment, address }).filter(i => !!i).join('; ')})
   
-events.on('contactsFormErrors:change', (errors: Partial<ICustomer>) => {
+events.on('contactsFormErrors:change', (errors: Partial<IOrder>) => {
     const { email, telephone } = errors
     contacts.valid = !email && !telephone
-    contacts.errors = Object.values({ telephone, email }).filter(i => !!i).join('; ')})
+    contacts.errors = Object.values({ telephone, email }).filter(error => !!error).join('; ')})
   
-events.on('orderInput:change', (data: { field: keyof ICustomer, value: string }) => {
+events.on('orderInput:change', (data: { field: keyof IOrderForm, value: string }) => {
     appModel.setOrderField(data.field, data.value)})
-  
 
 events.on('order:submit', () => {
     appModel.order.total = appModel.getTotalBasketPrice()
@@ -147,7 +146,7 @@ events.on('order:submit', () => {
     popup.render({content: contacts.render({valid: false,errors: []})})})
   
 events.on('contacts:submit', () => {
-    api.post('/order', appModel.order)
+    api.postOrderToServer(appModel.order)
       .then((res) => {
         events.emit('order:success', res);
         appModel.clearBasket();
@@ -164,8 +163,8 @@ events.on('contacts:submit', () => {
 events.on('order:success', (res: OrderResponse<string>) => {popup.render({content: success.render({
     description: res.total})})})
   
-  events.on('modal:close', () => {
-    // mainPage.locked = false;
-    appModel.refreshOrder();
+  events.on('popup:close', () => {
+    mainPage.locked = false
+    appModel.refreshOrder()
   });
   
