@@ -1,8 +1,9 @@
 import { IProductItem } from "../../types"
 import { cloneTemplate } from "../../utils/utils"
 import { IEvents } from "../base/events"
+import { MainComponent } from "./MainComponent"
 
-export class ProductItemView {
+export class ProductItemView extends MainComponent<IProductItem> {
     protected element: HTMLElement
     protected events: IEvents
     protected idView: string
@@ -15,7 +16,8 @@ export class ProductItemView {
     protected outOrderButton:HTMLButtonElement
 
 
-    constructor(template:HTMLTemplateElement, events: IEvents) {
+    constructor(nameElement: string, template:HTMLTemplateElement, actions?: IEvents) {
+        super(container)
         this.events = events
         this.element = cloneTemplate(template)
 
@@ -43,8 +45,13 @@ export class ProductItemView {
         this.element.remove()
         this.element = null
     }
-    render() {
-        return this.element
-    }
 
+}
+interface ICardActions {
+    onClick: (event: MouseEvent) => void;
+  }
+export class ListItem extends ProductItemView{
+    constructor(container:HTMLTemplateElement, actions?:ICardActions){
+        super('card', container, actions)
+    }
 }

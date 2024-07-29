@@ -1,60 +1,55 @@
+import { IProductItem,IOrder,IOrderForm,FormErrors } from "../../types";
+import { MainModel } from "./MainModel";
+import { IAppModel } from "../../types";
 
-import { productItemList } from './ProductItemsData';
-import { IOrder, IProductItem, FormErrors, IOrderForm } from '../types';
-import { Model } from './base/Model';
-import { IAppState } from '../types';
-
-export class Product {
+export class ProductItem extends MainModel<IProductItem> {
   id: string;
   description: string;
   image: string;
   title: string;
   category: string;
   price: number | null;
-  selected: boolean;
+  chosen: boolean;
 }
 
-/*
-  * Класс, описывающий состояние приложения
-  * */
-export class AppModel{
-  // Корзина с товарами
+export class AppModel extends MainModel<IAppModel>{
+
   basketItem: ProductItem[] = [];
 
-  // Массив со всеми товарами
-  productItemList: Product[];
+  productItemList: ProductItem[];
 
-  // Объект заказа клиента
   order: IOrder = {
     items: [],
-    payment: '',
-    total: null,
-    address: '',
     email: '',
-    phone: '',
+    telephone: '',
+    address: '',
+    payment: '',
   };
 
-  // Объект с ошибками форм
   formErrors: FormErrors = {};
 
-  addToBasket(value: Product) {
-    this.basket.push(value);
+  toBasket(value: ProductItem) {
+    this.basketItem.push(value);
   }
 
-  deleteFromBasket(id: string) {
-    this.basket = this.basket.filter(item => item.id !== id)
+  fromBasket(id: string) {
+    this.basketItem = this.basketItem.filter(item => item.id !== id)
   }
 
   clearBasket() {
-    this.basket.length = 0;
+    this.basketItem.length = 0;
   }
 
-  getBasketAmount() {
-    return this.basket.length;
+  getItemsInOrderList() {
+    return this.basketItem.length;
+  }
+  
+  getTotalBasketPrice() {
+    return this.basketItem.reduce((sum:number, next) => sum + next.price, 0);
   }
 
   setItems() {
-    this.order.items = this.basket.map(item => item.id)
+    this.order.items = this.basketItem.map(item => item.id)
   }
 
   setOrderField(field: keyof IOrderForm, value: string) {
@@ -73,8 +68,8 @@ export class AppModel{
     if (!this.order.email) {
       errors.email = 'Необходимо указать email';
     }
-    if (!this.order.phone) {
-      errors.phone = 'Необходимо указать телефон';
+    if (!this.order.telephone) {
+      errors.telephone = 'Необходимо указать телефон';
     }
     this.formErrors = errors;
     this.events.emit('contactsFormErrors:change', this.formErrors);
@@ -97,24 +92,19 @@ export class AppModel{
   refreshOrder() {
     this.order = {
       items: [],
-      total: null,
       address: '',
       email: '',
-      phone: '',
+      telephone: '',
       payment: ''
     };
   }
 
-  getTotalBasketPrice() {
-    return this.basket.reduce((sum, next) => sum + next.price, 0);
+    setProductItemsList(items: IProductItem[]) {
+    this.productItemList = items.map((item) => new ProductItem({ ...item, chosen: false }, this.events));
+    this.emitChanges('items:changed', { productItemList: this.productItemList });
   }
 
-  setStore(items: IProduct[]) {
-    this.store = items.map((item) => new Product({ ...item, selected: false }, this.events));
-    this.emitChanges('items:changed', { store: this.store });
-  }
-
-  resetSelected() {
-    this.store.forEach(item => item.selected = false)
+  resetChosen() {
+    this.productItemList.forEach(item => item.chosen = false)
   }
 }

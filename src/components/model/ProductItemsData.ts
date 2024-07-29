@@ -1,4 +1,4 @@
-import { IProductItem,IProductItemListData } from "../../types";
+import { IProductItem, IProductItemListData } from "../../types";
 import { IEvents } from "../base/events";
 
 export class ProductItemList implements IProductItemListData{
