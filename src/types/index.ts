@@ -101,3 +101,23 @@ export interface IPage {
     productItemList: HTMLElement[] // - ul для вывода карточек товаров 
     counter:number // - счетчик товаров в заказе
 }
+
+export type CategoryType =
+  | 'другое'
+  | 'софт-скил'
+  | 'дополнительное'
+  | 'кнопка'
+  | 'хард-скил';
+
+export type CategoryMapping = {
+  [Key in CategoryType]: string;
+}
+
+export interface IBasket {
+    list: HTMLElement[];  
+    price: number;
+  }
+
+export interface IPopupView{
+    content: HTMLElement
+  }

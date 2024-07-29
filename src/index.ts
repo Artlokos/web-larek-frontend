@@ -1,18 +1,18 @@
-// import { Api } from './components/base/api';
-import { AppApi } from './components/AppApi';
-import { Api } from './components/base/api';
-import { EventEmitter } from './components/base/events';
-import { AppModel } from './components/model/AppModel';
-import { Customer } from './components/model/CustomerData';
-import { OrderModel } from './components/model/OrderData';
-import { ProductItemList } from './components/model/ProductItemsData';
-import { MainPage } from './components/view/MainPageView';
-import { ListItem, ProductItemView } from './components/view/ProductItemView';
-import './scss/styles.scss';
-import { IApi, IProductItem } from './types';
-import { API_URL } from './utils/constants';
-import { testCardList } from './utils/tempForTest';
-import { ensureElement, cloneTemplate } from './utils/utils';
+import { AppApi } from './components/AppApi'
+import { Api } from './components/base/api'
+import { EventEmitter } from './components/base/events'
+import { AppModel,ProductItem } from './components/model/AppModel'
+import { Customer } from './components/model/CustomerData'
+import { OrderModel } from './components/model/OrderData'
+import { ProductItemList } from './components/model/ProductItemsData'
+import { MainPage } from './components/view/MainPageView'
+import { ListItem, ListItemOpened } from './components/view/ProductItemView'
+import './scss/styles.scss'
+import { IApi, IProductItem } from './types'
+import { API_URL } from './utils/constants'
+import { testCardList } from './utils/tempForTest'
+import { ensureElement, cloneTemplate } from './utils/utils'
+import { Popup } from './components/view/PopupView'
 
 const events = new EventEmitter();
 const baseApi: IApi = new Api(API_URL)
@@ -38,7 +38,7 @@ const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts')
 const successTemplate = ensureElement<HTMLTemplateElement>('#success')
 
 const mainPage = new MainPage(document.body, events)
-// const popup = new Popup(ensureElement<HTMLElement>('#modal-container'), events)
+const popup = new Popup(ensureElement<HTMLElement>('#modal-container'), events)
 
 // const basket = new Basket('basket', cloneTemplate(basketTemplate), events);
 // const order = new Order('order', cloneTemplate(orderTemplate), events)
@@ -65,7 +65,25 @@ events.on('items:changed', () => {
     });
   });
 
-
+  events.on('card:select', (item: ProductItem) => {
+    // mainPage.locked = true;
+    const product = new ListItemOpened(cloneTemplate(cardPreviewTemplate), {
+      onClick: () => {
+        events.emit('card:toBasket', item)
+      },
+    });
+    popup.render({
+        content: product.render({
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        category: item.category,
+        description: item.description,
+        price: item.price,
+        chosen: item.chosen
+      }),
+    });
+  });
 
 
 
