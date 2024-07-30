@@ -1,8 +1,7 @@
-import { TProductItemInfo } from "../../types"
 import { ensureElement, handlePrice } from "../../utils/utils"
 import { MainComponent } from "./MainComponent"
 import { CDN_URL } from "../../utils/constants"
-import { CategoryType,category } from "../../types"
+import { TProductItemInfo,CategoryType,category,ICardActions } from "../../types"
 
 export class ProductItemView extends MainComponent<TProductItemInfo> {
     protected _title: HTMLElement
@@ -14,17 +13,15 @@ export class ProductItemView extends MainComponent<TProductItemInfo> {
     constructor(protected nameElement:string, container:HTMLElement, actions?: ICardActions) {
         super(container)
 
-        this._title = ensureElement<HTMLElement>(`.${nameElement}__title`, container);
-        this._image = ensureElement<HTMLImageElement>(
-          `.${nameElement}__image`,
-          container
-        );
-        this._button = container.querySelector(`.${nameElement}__button`);
-        this._category = container.querySelector(`.${nameElement}__category`);
-        this._price = container.querySelector(`.${nameElement}__price`);
+        this._category = container.querySelector(`.${nameElement}__category`)
+        this._title = ensureElement<HTMLElement>(`.${nameElement}__title`, container)
+        this._image = ensureElement<HTMLImageElement>(`.${nameElement}__image`,container)
+        this._button = container.querySelector(`.${nameElement}__button`)
+        this._price = container.querySelector(`.${nameElement}__price`)
     
         if (actions?.onClick) {
           if (this._button) {
+            this._button.innerHTML="Hello"
             this._button.addEventListener('click', actions.onClick);
           } else {
             container.addEventListener('click', actions.onClick);
@@ -70,17 +67,7 @@ export class ProductItemView extends MainComponent<TProductItemInfo> {
   }
 
 }
-interface ICardActions {
-    onClick: (event: MouseEvent) => void;
-  }
-
-export class ListItem extends ProductItemView{
-    constructor(container:HTMLTemplateElement, actions?:ICardActions){
-        super('card', container, actions)
-    }
-}
-
-export class ListItemOpened extends ProductItemView {
+export class ListItem extends ProductItemView {
     protected _description: HTMLElement;
   
     constructor(container: HTMLElement, actions?:ICardActions) {

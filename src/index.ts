@@ -9,13 +9,11 @@ import { IApi, IProductItem,ICustomer, IOrder, IOrderResponse } from './types'
 import { AppApi } from './components/AppApi'
 import { AppModel, ProductItem } from './components/model/AppModel'
 import { MainPage } from './components/view/MainPageView'
-import { ListItem, ListItemOpened } from './components/view/ProductItemView'
+import { ListItem } from './components/view/ProductItemView'
 import { testCardList } from './utils/tempForTest'
 import { Popup } from './components/view/PopupView'
 import { OrderList, OrderListItem } from './components/view/OrderListView'
-import { Order } from './components/view/OrderView'
-import { Contacts } from './components/view/ContactsView'
-import { Success } from './components/view/DoneOrder'
+import { Order, Contacts, Success } from './components/view/FormView'
 
 const events = new EventEmitter()
 const appModel = new AppModel({},events)
@@ -65,7 +63,7 @@ events.on('items:changed', () => {
 
 events.on('card:select', (item: ProductItem) => {
     mainPage.locked = true
-    const product = new ListItemOpened(cloneTemplate(cardPreviewTemplate), {onClick: () => {events.emit('card:toBasket', item)}})
+    const product = new ListItem(cloneTemplate(cardPreviewTemplate), {onClick: () => {events.emit('card:toBasket', item)}})
     popup.render({
         content: product.render({
         id: item.id,

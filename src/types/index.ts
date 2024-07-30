@@ -34,17 +34,16 @@ export interface ICustomer {
     phone: string // - телефон покупателя
     address: string // - адрес доставки покупателя
     payment:string // - способ  оплаты
-
 }
 
 // Данные для создания новой карточки товара
 export type TProductItemInfo = Pick<IProductItem,'id'|'title' | 'description' | 'image' | 'category' | 'price' | 'chosen'>
 
 // Данные для создания заказа из корзины
-export type TOrderMain = Pick<IOrder, 'items'>
+export type TOrder = Pick<IOrder, 'address'|'payment'>
 
 // Данные электронной почты, телефона покупателя, способа оплаты и адреса доставки
-export type TOrderCustomer = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'address'>
+export type TOrderContacts = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'address'>
 
 // Данные для проверки полей формы
 export type FormErrors = Partial<Record<keyof ICustomer, string>>
@@ -54,6 +53,9 @@ export type FormErrors = Partial<Record<keyof ICustomer, string>>
 export interface IOrderResponse {
   id:string
   total:number
+}
+export interface ISuccess {
+  totalPrice: number
 }
 
 //Тип объекта для запроса к серверу 
@@ -71,11 +73,11 @@ export interface IAppModel {
     formErrors: FormErrors // Ошибки при заполнении форм
     
     // Методы
-    toBasket(value: ProductItem): void // Метод для добавления товара в корзину
-    fromBasket(id: string): void // Метод для удаления товара из корзины
-    clearBasket(): void // Метод для полной очистки корзины
+    toOrderList(value: ProductItem): void // Метод для добавления товара в корзину
+    outOfOrderList(id: string): void // Метод для удаления товара из корзины
+    clearOrderList(): void // Метод для полной очистки корзины
     getItemsInOrderList(): number // Метод для получения количества товаров в корзине
-    getTotalBasketPrice(): number // Метод для получения суммы цены всех товаров в корзине
+    getTotalPrice(): number // Метод для получения суммы цены всех товаров в корзине
     setItems(): void // Метод для добавления ID товаров в корзине в поле items для order
     setOrderField(field: keyof ICustomer, value: string): void // Метод для заполнения полей email, phone, address, payment в order
     validateContacts(): boolean; // Валидация форм для окошка "контакты"
@@ -114,10 +116,16 @@ export interface IOrderList {
     price: number
   }
 
+export interface ICardActions {onClick: (event: MouseEvent) => void}
+
 export interface IPopupView{
     content: HTMLElement
   }
 export interface IForm {
     valid: boolean
     errors: string[]
+  }
+
+export interface ISuccessActions {
+    onClick: (event: MouseEvent) => void
   }

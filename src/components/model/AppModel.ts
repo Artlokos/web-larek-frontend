@@ -40,16 +40,16 @@ export class AppModel extends MainModel<IAppModel>{
   }
   validateContacts() {
     const errors: typeof this.formErrors = {}
-    if (!this.order.email) {errors.email = 'Необходимо указать email'}
-    if (!this.order.phone) {errors.phone = 'Необходимо указать телефон'}
+    if (!this.order.email) {errors.email = 'Пропущен email'}
+    if (!this.order.phone) {errors.phone = 'Пропущен телефон'}
     this.formErrors = errors
     this.events.emit('contactsFormErrors:change', this.formErrors)
     return Object.keys(errors).length === 0
   }
   validateOrder() {
     const errors: typeof this.formErrors = {}
-    if (!this.order.address) {errors.address = 'Необходимо указать адрес'}
-    if (!this.order.payment) {errors.payment = 'Необходимо указать способ оплаты'}
+    if (!this.order.address) {errors.address = 'Пропущен адрес'}
+    if (!this.order.payment) {errors.payment = 'Пропущен способ оплаты'}
     this.formErrors = errors
     this.events.emit('orderFormErrors:change', this.formErrors)
     return Object.keys(errors).length === 0
@@ -68,5 +68,5 @@ export class AppModel extends MainModel<IAppModel>{
     this.productItemList = items.map((item) => new ProductItem({ ...item, chosen: false }, this.events))
     this.emitChanges('items:changed', { productItemList: this.productItemList })
   }
-  resetChosen() {this.productItemList.forEach(item => item.chosen = false)}
+    resetChosen() {this.productItemList.forEach(item => item.chosen = false)}
 }
