@@ -1,4 +1,4 @@
-import { IProductItem,IOrder,IOrderForm,FormErrors } from "../../types"
+import { IProductItem,IOrder,FormErrors, ICustomer } from "../../types"
 import { MainModel } from "./MainModel"
 import { IAppModel } from "../../types"
 export class ProductItem extends MainModel<IProductItem> {
@@ -16,20 +16,20 @@ export class AppModel extends MainModel<IAppModel>{
   order: IOrder = {
     items: [],
     email: '',
-    telephone: '',
+    phone: '',
     address: '',
     payment: '',
     total:null
   }
   formErrors: FormErrors = {}
 
-  toBasket(value: ProductItem) {this.basketItem.push(value)}
-  outOfBasket(id: string) {this.basketItem = this.basketItem.filter(item => item.id !== id)}
-  clearBasket() {this.basketItem.length = 0}
+  toOrderList(value: ProductItem) {this.basketItem.push(value)}
+  outOfOrderList(id: string) {this.basketItem = this.basketItem.filter(item => item.id !== id)}
+  clearOrderList() {this.basketItem.length = 0}
   getItemsInOrderList() {return this.basketItem.length}
-  getTotalBasketPrice() {return this.basketItem.reduce((sum:number, next) => sum + next.price, 0)}
+  getTotalPrice() {return this.basketItem.reduce((sum:number, next) => sum + next.price, 0)}
   setItems() {this.order.items = this.basketItem.map(item => item.id)}
-  setOrderField(field: keyof IOrderForm, value: string) {
+  setOrderField(field: keyof ICustomer, value: string) {
     this.order[field] = value
     if (this.validateContacts()) {
       this.events.emit('contacts:ready', this.order)
@@ -41,7 +41,7 @@ export class AppModel extends MainModel<IAppModel>{
   validateContacts() {
     const errors: typeof this.formErrors = {}
     if (!this.order.email) {errors.email = 'Необходимо указать email'}
-    if (!this.order.telephone) {errors.telephone = 'Необходимо указать телефон'}
+    if (!this.order.phone) {errors.phone = 'Необходимо указать телефон'}
     this.formErrors = errors
     this.events.emit('contactsFormErrors:change', this.formErrors)
     return Object.keys(errors).length === 0
@@ -59,7 +59,7 @@ export class AppModel extends MainModel<IAppModel>{
       items: [],
       address: '',
       email: '',
-      telephone: '',
+      phone: '',
       payment: '',
       total:null
     }

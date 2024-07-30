@@ -6,7 +6,7 @@ interface ISuccessActions {
 }
 
 export interface ISuccess {
-  description: number
+  totalPrice: number
 }
 
 export class Success extends MainComponent<ISuccess> {
@@ -24,7 +24,8 @@ export class Success extends MainComponent<ISuccess> {
         {this._button.addEventListener('click', actions.onClick)}
     }
   }
-  set description(value: number) {
+
+  set totalPrice(value: number) {
     this._description.textContent = 'Списано ' + handlePrice(value) + ' синапсов'
   }
 }

@@ -1,5 +1,5 @@
 
-// Общий компонент
+// Общий родитель для любого компонента
 
 export abstract class MainComponent<T> {
     protected constructor(protected readonly container: HTMLElement) { }

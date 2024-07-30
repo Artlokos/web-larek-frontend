@@ -1,28 +1,28 @@
-import { IProductItem, IProductItemListData } from "../../types";
-import { IEvents } from "../base/events";
+// import { IProductItem, IProductItemListData } from "../../types";
+// import { IEvents } from "../base/events";
 
-export class ProductItemList implements IProductItemListData{
-    protected _productItems: IProductItem[]
-    protected events: IEvents
+// export class ProductItemList implements IProductItemListData{
+//     protected _productItems: IProductItem[]
+//     protected events: IEvents
 
-    constructor(events:IEvents) {
-        this.events = events
-    }
+//     constructor(events:IEvents) {
+//         this.events = events
+//     }
 
-    getProductItem(productItemId: string): IProductItem {
-        return this._productItems.find((item) => item.id == productItemId)
-    }
+//     getProductItem(productItemId: string): IProductItem {
+//         return this._productItems.find((item) => item.id == productItemId)
+//     }
 
-    set productItemList(productItems:IProductItem[]) {
-        this._productItems = productItems
-        this.events.emit('cards:changed')
-    }
+//     set productItemList(productItems:IProductItem[]) {
+//         this._productItems = productItems
+//         this.events.emit('cards:changed')
+//     }
 
-    get productItemList() {
-        return this._productItems
-    }
+//     // get productItemList() {
+//     //     return this._productItems
+//     // }
 
-}
+// }
 
 
 

@@ -1,15 +1,16 @@
+import { IEvents } from "../base/events";
 import { IProductItem } from "../../types"; 
 import { handlePrice } from "../../utils/utils";
 import { MainComponent } from "./MainComponent";
-import { IEvents } from "../base/events";
-import { IBasket } from "../../types";
-export class Basket extends MainComponent<IBasket> {
-  // Ссылки на внутренние элементы
+import { IOrderList } from "../../types";
+
+export class OrderList extends MainComponent<IOrderList> {
+
   protected _list: HTMLElement;
   protected _price: HTMLElement;
   protected _button: HTMLButtonElement;
 
-  // Конструктор принимает имя блока, родительский элемент и обработчик событий
+
   constructor(
     protected blockName: string,
     container: HTMLElement,
@@ -26,34 +27,30 @@ export class Basket extends MainComponent<IBasket> {
     }
   }
 
-  // Сеттер для общей цены
   set price(price: number) {
     this._price.textContent = handlePrice(price) + ' синапсов';
   }
 
-  // Сеттер для списка товаров 
   set list(items: HTMLElement[]) {
     this._list.replaceChildren(...items);
     this._button.disabled = items.length ? false : true;
   }
 
-  // Метод отключающий кнопку "Оформить"
   disableButton() {
     this._button.disabled = true
   }
 
-  // Метод для обновления индексов таблички при удалении товара из корзины
   refreshCountInBasket() {
     Array.from(this._list.children).forEach(
       (item, index) =>
-      (item.querySelector(`.basket__item-index`)!.textContent = (
+      (item.querySelector('.basket__item-index')!.textContent = (
         index + 1
       ).toString())
     );
   }
 }
 
-export interface IProductBasket extends IProductItem {
+export interface IProductOrderList extends IProductItem {
   id: string;
   index: number;
 }
@@ -62,7 +59,7 @@ export interface IStoreItemBasketActions {
   onClick: (event: MouseEvent) => void;
 }
 
-export class StoreItemBasket extends MainComponent<IProductBasket> {
+export class OrderListItem extends MainComponent<IProductOrderList> {
   protected _index: HTMLElement;
   protected _title: HTMLElement;
   protected _price: HTMLElement;

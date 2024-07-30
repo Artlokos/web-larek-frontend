@@ -2,11 +2,6 @@ import { MainComponent } from './MainComponent'
 import { ensureElement } from '../../utils/utils'
 import { IEvents } from '../base/events'
 import { IPopupView } from '../../types'
-
-interface IModalData {
-  content: HTMLElement
-}
-
 export class Popup extends MainComponent<IPopupView> {
   protected _closeButton: HTMLButtonElement
   protected _content: HTMLElement
@@ -36,7 +31,7 @@ export class Popup extends MainComponent<IPopupView> {
     this.events.emit('popup:close')
   }
 
-  render(data: IModalData): HTMLElement {
+  render(data: IPopupView): HTMLElement {
     super.render(data)
     this.open()
     return this.container

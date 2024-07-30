@@ -1,27 +1,26 @@
-import { AppApi } from './components/AppApi'
-import { Api } from './components/base/api'
+import './scss/styles.scss'
+import { API_URL } from './utils/constants'
+import { ensureElement, cloneTemplate } from './utils/utils'
 import { EventEmitter } from './components/base/events'
-import { AppModel,ProductItem } from './components/model/AppModel'
-import { Customer } from './components/model/CustomerData'
-import { OrderModel } from './components/model/OrderData'
-import { ProductItemList } from './components/model/ProductItemsData'
+import { Api } from './components/base/api'
+
+import { IApi, IProductItem,ICustomer, IOrder, IOrderResponse } from './types'
+
+import { AppApi } from './components/AppApi'
+import { AppModel, ProductItem } from './components/model/AppModel'
 import { MainPage } from './components/view/MainPageView'
 import { ListItem, ListItemOpened } from './components/view/ProductItemView'
-import './scss/styles.scss'
-import { IApi, IProductItem,ICustomer, OrderResponse, IOrderForm, IOrder } from './types'
-import { API_URL } from './utils/constants'
 import { testCardList } from './utils/tempForTest'
-import { ensureElement, cloneTemplate } from './utils/utils'
 import { Popup } from './components/view/PopupView'
-import { Basket, StoreItemBasket } from './components/view/BasketView'
-import { Order} from './components/view/OrderView'
+import { OrderList, OrderListItem } from './components/view/OrderListView'
+import { Order } from './components/view/OrderView'
 import { Contacts } from './components/view/ContactsView'
 import { Success } from './components/view/DoneOrder'
 
-const events = new EventEmitter();
-const baseApi: IApi = new Api(API_URL)
+const events = new EventEmitter()
 const appModel = new AppModel({},events)
 
+const baseApi: IApi = new Api(API_URL)
 const api = new AppApi(baseApi)
 api.getProductItemList()
     .then((res)=>{
@@ -44,35 +43,29 @@ const successTemplate = ensureElement<HTMLTemplateElement>('#success')
 const mainPage = new MainPage(document.body, events)
 const popup = new Popup(ensureElement<HTMLElement>('#modal-container'), events)
 
-const basket = new Basket('basket', cloneTemplate(basketTemplate), events);
+const orderList = new OrderList('basket', cloneTemplate(basketTemplate), events);
 const order = new Order('order', cloneTemplate(orderTemplate), events)
-const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
+const contacts = new Contacts(cloneTemplate(contactsTemplate), events)
+
 const success = new Success('order-success', cloneTemplate(successTemplate), {
-  onClick: () => {
+    onClick: () => {
     events.emit('popup:close')
-    popup.close()
-  }
-})
+    popup.close()}})
 
 events.on('items:changed', () => {
     mainPage.productItemList = appModel.productItemList.map((item) => {
       const product = new ListItem(cloneTemplate(cardCatalogTemplate), {
-        onClick: () => events.emit('card:select', item),
-      })
+        onClick: () => events.emit('card:select', item)})
       return product.render({
         id: item.id,
         title: item.title,
         image: item.image,
         category: item.category,
-        price: item.price
-      })
-    })
-  })
+        price: item.price})})})
 
 events.on('card:select', (item: ProductItem) => {
     mainPage.locked = true
-    const product = new ListItemOpened(cloneTemplate(cardPreviewTemplate), {
-      onClick: () => {events.emit('card:toBasket', item)}})
+    const product = new ListItemOpened(cloneTemplate(cardPreviewTemplate), {onClick: () => {events.emit('card:toBasket', item)}})
     popup.render({
         content: product.render({
         id: item.id,
@@ -84,46 +77,31 @@ events.on('card:select', (item: ProductItem) => {
         chosen: item.chosen})})})
 
 events.on('card:toBasket', (item: ProductItem) => {
-    item.chosen = true;
-    appModel.toBasket(item);
-    mainPage.counter = appModel.getItemsInOrderList();
-    popup.close();
-  })
+    item.chosen = true
+    appModel.toOrderList(item)
+    mainPage.counter = appModel.getItemsInOrderList()
+    popup.close()})
 
 events.on('basket:delete', (item: ProductItem) => {
-    appModel.outOfBasket(item.id);
-    item.chosen = false;
-    basket.price = appModel.getTotalBasketPrice();
-    mainPage.counter = appModel.getItemsInOrderList();
-    basket.refreshCountInBasket();
-    if (!appModel.basketItem.length) {
-      basket.disableButton();
-    }
-  })
+    appModel.outOfOrderList(item.id)
+    item.chosen = false
+    orderList.price = appModel.getTotalPrice()
+    mainPage.counter = appModel.getItemsInOrderList()
+    orderList.refreshCountInBasket()
+    if (!appModel.basketItem.length) orderList.disableButton()})
 
 events.on('basket:open', () => {
     mainPage.locked = true
-    const basketItems = appModel.basketItem.map((item, index) => {
-      const ListItem = new StoreItemBasket(
-        'card',
-        cloneTemplate(cardBasketTemplate),
-        {
-          onClick: () => events.emit('basket:delete', item)
-        }
-      )
-      return ListItem.render({
-        title: item.title,
-        price: item.price,
-        index: index + 1,
-      })
-    })
+    const orderItemList = appModel.basketItem.map((item, index) => {
+      const ListItem = new OrderListItem('card',cloneTemplate(cardBasketTemplate),{onClick: () => events.emit('basket:delete', item)})
+        return ListItem.render({
+            title: item.title,
+            price: item.price,
+            index: index + 1})})
     popup.render({
-      content: basket.render({
-        list: basketItems,
-        price: appModel.getTotalBasketPrice(),
-      }),
-    })
-  })
+      content: orderList.render({
+        list: orderItemList,
+        price: appModel.getTotalPrice()})})})
 
 events.on('basket:order', () => {popup.render({content: order.render({address: '',valid: false,errors: []})})})
   
@@ -133,38 +111,32 @@ events.on('orderFormErrors:change', (errors: Partial<ICustomer>) => {
     order.errors = Object.values({ payment, address }).filter(i => !!i).join('; ')})
   
 events.on('contactsFormErrors:change', (errors: Partial<IOrder>) => {
-    const { email, telephone } = errors
-    contacts.valid = !email && !telephone
-    contacts.errors = Object.values({ telephone, email }).filter(error => !!error).join('; ')})
+    const { email, phone } = errors
+    contacts.valid = !email && !phone
+    contacts.errors = Object.values({ phone, email }).filter(error => !!error).join('; ')})
   
-events.on('orderInput:change', (data: { field: keyof IOrderForm, value: string }) => {
-    appModel.setOrderField(data.field, data.value)})
+events.on('orderInput:change', (data: {field: keyof ICustomer, value: string}) => {appModel.setOrderField(data.field, data.value)})
 
 events.on('order:submit', () => {
-    appModel.order.total = appModel.getTotalBasketPrice()
+    appModel.order.total = appModel.getTotalPrice()
     appModel.setItems()
-    popup.render({content: contacts.render({valid: false,errors: []})})})
+    popup.render({content: contacts.render({valid: false,errors:[]})})})
   
 events.on('contacts:submit', () => {
     api.postOrderToServer(appModel.order)
       .then((res) => {
-        events.emit('order:success', res);
-        appModel.clearBasket();
-        appModel.refreshOrder();
-        order.disableButtons();
-        mainPage.counter = 0;
-        appModel.resetChosen();
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  })
+        events.emit('order:success', res)
+        appModel.clearOrderList()
+        appModel.refreshOrder()
+        order.disableButtons()
+        mainPage.counter = 0
+        appModel.resetChosen()})
+      .catch((err) => {console.log(err)})})
   
-events.on('order:success', (res: OrderResponse<string>) => {popup.render({content: success.render({
-    description: res.total})})})
+events.on('order:success', (res: IOrderResponse) => {popup.render({content:success.render({
+    totalPrice: res.total})})})
   
-  events.on('popup:close', () => {
+events.on('popup:close', () => {
     mainPage.locked = false
-    appModel.refreshOrder()
-  });
+    appModel.refreshOrder()})
   

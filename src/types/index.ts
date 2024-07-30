@@ -16,63 +16,46 @@ export interface IProductItem {
     image: string // - Ссылка на изображение товара
     category: string // - Категория товара
     price: number // - Цена товара
-    // items: IProductItem[]
     chosen:boolean // - статус товара (в заказе или нет)
 }
 
 // Заказ, корзина
 export interface IOrder {
-    items: string[] // - массив выбранных товаров
+    items: string[] // - массив id выбранных товаров
     email: string // - электронная почта покупателя
-    telephone: string // - телефон покупателя
+    phone: string // - телефон покупателя
     address: string // - адрес доставки покупателя
     payment:string // - способ  оплаты
-    total: number
+    total: number // - сумма заказа
 }
-
-// Интерфейс для модели карточек 
-export interface IOrderData {
-    orderItems: IProductItem[]
-    customer: ICustomer
-
-    addProductItem(productItem:IProductItem): void
-    removeProductItem(productItemId:string, payload: null): void
-}
-
-export interface IOrderForm {
-    payment: string
-    address: string
-    email: string
-    telephone: string
-  }
-  
-
-// Данные о покупателе
+  // Данные о покупателе
 export interface ICustomer {
     email: string // - электронная почта покупателя
-    telephone: string // - телефон покупателя
+    phone: string // - телефон покупателя
     address: string // - адрес доставки покупателя
     payment:string // - способ  оплаты
 
 }
 
 // Данные для создания новой карточки товара
-export type TProductItemInfo = Pick<IProductItem,'title' | 'description' | 'image' | 'category' | 'price'>
+export type TProductItemInfo = Pick<IProductItem,'id'|'title' | 'description' | 'image' | 'category' | 'price' | 'chosen'>
 
 // Данные для создания заказа из корзины
 export type TOrderMain = Pick<IOrder, 'items'>
 
 // Данные электронной почты, телефона покупателя, способа оплаты и адреса доставки
-export type TOrderCustomer = Pick<ICustomer, 'email' | 'telephone' | 'payment' | 'address'>
+export type TOrderCustomer = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'address'>
 
 // Данные для проверки полей формы
-export type FormErrors = Partial<Record<keyof IOrderForm, string>>
+export type FormErrors = Partial<Record<keyof ICustomer, string>>
 
-// Тип для отправки заказа на сервер
-export type OrderResponse<Type> = {
-    total: number
-    items: Type[]
-  };
+// export type TOrderResponse = Pick<IOrder, 'id'>
+
+export interface IOrderResponse {
+  id:string
+  total:number
+}
+
 //Тип объекта для запроса к серверу 
 export interface IApi {
     baseUrl: string
@@ -94,7 +77,7 @@ export interface IAppModel {
     getItemsInOrderList(): number // Метод для получения количества товаров в корзине
     getTotalBasketPrice(): number // Метод для получения суммы цены всех товаров в корзине
     setItems(): void // Метод для добавления ID товаров в корзине в поле items для order
-    setOrderField(field: keyof IOrderForm, value: string): void // Метод для заполнения полей email, phone, address, payment в order
+    setOrderField(field: keyof ICustomer, value: string): void // Метод для заполнения полей email, phone, address, payment в order
     validateContacts(): boolean; // Валидация форм для окошка "контакты"
     validateOrder(): boolean // Валидация форм для окошка "заказ"
     refreshOrder(): boolean // Очистить order после покупки товаров
@@ -114,11 +97,19 @@ export type CategoryType =
   | 'кнопка'
   | 'хард-скил';
 
-export type CategoryMapping = {
+export type CategoryArray = {
   [Key in CategoryType]: string
 }
 
-export interface IBasket {
+export const category: CategoryArray = {
+	'другое': 'card__category_other',
+	'софт-скил': 'card__category_soft',
+	'дополнительное': 'card__category_additional',
+	'кнопка': 'card__category_button',
+	'хард-скил': 'card__category_hard',
+  };
+
+export interface IOrderList {
     list: HTMLElement[]  
     price: number
   }
