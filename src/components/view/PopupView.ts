@@ -10,8 +10,8 @@ export class Popup extends MainComponent<IPopupView> {
     super(container)
 
     this._closeButton = ensureElement<HTMLButtonElement>('.modal__close', container)
-    this._content = ensureElement<HTMLElement>('.modal__content', container)
     this._closeButton.addEventListener('click', this.close.bind(this))
+    this._content = ensureElement<HTMLElement>('.modal__content', container)
     this.container.addEventListener('click', this.close.bind(this))
     this._content.addEventListener('click', (event) => event.stopPropagation())
   }

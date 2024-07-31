@@ -80,18 +80,18 @@ events.on('card:toBasket', (item: ProductItem) => {
     mainPage.counter = appModel.getItemsInOrderList()
     popup.close()})
 
-events.on('basket:delete', (item: ProductItem) => {
+events.on('orderList:delete', (item: ProductItem) => {
     appModel.outOfOrderList(item.id)
     item.chosen = false
     orderList.price = appModel.getTotalPrice()
     mainPage.counter = appModel.getItemsInOrderList()
     orderList.refreshCountInBasket()
-    if (!appModel.basketItem.length) orderList.disableButton()})
+    if (!appModel.orderListItem.length) orderList.disableButton()})
 
-events.on('basket:open', () => {
+events.on('orderList:open', () => {
     mainPage.locked = true
-    const orderItemList = appModel.basketItem.map((item, index) => {
-      const ListItem = new OrderListItem('card',cloneTemplate(cardBasketTemplate),{onClick: () => events.emit('basket:delete', item)})
+    const orderItemList = appModel.orderListItem.map((item, index) => {
+      const ListItem = new OrderListItem('card',cloneTemplate(cardBasketTemplate),{onClick: () => events.emit('orderList:delete', item)})
         return ListItem.render({
             title: item.title,
             price: item.price,
@@ -101,7 +101,7 @@ events.on('basket:open', () => {
         list: orderItemList,
         price: appModel.getTotalPrice()})})})
 
-events.on('basket:order', () => {popup.render({content: order.render({address: '',valid: false,errors: []})})})
+events.on('orderList:order', () => {popup.render({content: order.render({address: '',valid: false,errors: []})})})
   
 events.on('orderFormErrors:change', (errors: Partial<ICustomer>) => {
     const { payment, address } = errors

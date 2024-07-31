@@ -11,7 +11,7 @@ export class ProductItem extends MainModel<IProductItem> {
   chosen: boolean
 }
 export class AppModel extends MainModel<IAppModel>{
-  basketItem: ProductItem[] = []
+  orderListItem: ProductItem[] = []
   productItemList: ProductItem[]
   order: IOrder = {
     items: [],
@@ -23,12 +23,12 @@ export class AppModel extends MainModel<IAppModel>{
   }
   formErrors: FormErrors = {}
 
-  toOrderList(value: ProductItem) {this.basketItem.push(value)}
-  outOfOrderList(id: string) {this.basketItem = this.basketItem.filter(item => item.id !== id)}
-  clearOrderList() {this.basketItem.length = 0}
-  getItemsInOrderList() {return this.basketItem.length}
-  getTotalPrice() {return this.basketItem.reduce((sum:number, next) => sum + next.price, 0)}
-  setItems() {this.order.items = this.basketItem.map(item => item.id)}
+  toOrderList(value: ProductItem) {this.orderListItem.push(value)}
+  outOfOrderList(id: string) {this.orderListItem = this.orderListItem.filter(item => item.id !== id)}
+  clearOrderList() {this.orderListItem.length = 0}
+  getItemsInOrderList() {return this.orderListItem.length}
+  getTotalPrice() {return this.orderListItem.reduce((sum:number, next) => sum + next.price, 0)}
+  setItems() {this.order.items = this.orderListItem.map(item => item.id)}
   setOrderField(field: keyof ICustomer, value: string) {
     this.order[field] = value
     if (this.validateContacts()) {

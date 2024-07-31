@@ -23,7 +23,7 @@ export class OrderList extends MainComponent<IOrderList> {
     this._list = container.querySelector(`.${blockName}__list`);
 
     if (this._button) {
-      this._button.addEventListener('click', () => this.events.emit('basket:order'))
+      this._button.addEventListener('click', () => this.events.emit('orderList:order'))
     }
   }
 

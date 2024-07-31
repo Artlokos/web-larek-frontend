@@ -17,7 +17,7 @@ export class MainPage extends MainComponent<IPage> {
         this._wrapper = ensureElement<HTMLElement>('.page__wrapper')
         this._basket = ensureElement<HTMLElement>('.header__basket')
 
-        this._basket.addEventListener('click', () => this.events.emit('basket:open'))
+        this._basket.addEventListener('click', () => this.events.emit('orderList:open'))
     }
 
     set productItemList(items: HTMLElement[]){
