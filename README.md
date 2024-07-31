@@ -258,7 +258,7 @@ interface ISuccessActions {onClick: (event: MouseEvent) => void}
 Абстрактный класс содержащий общие методы для работы со всеми компонентами представления.\
 Конструктор класса принимает контейнер с дочерними компонентами и предоставляет методы для изменения их состояния.\
 \
-Методы класса:\
+Методы класса:
 
 - toggleClass(element: HTMLElement, className: string, force?: boolean): void - изменение класса элемента
 - setText(element: HTMLElement, value: string): void - добавление текста в свойство textContent элемета
@@ -271,7 +271,7 @@ interface ISuccessActions {onClick: (event: MouseEvent) => void}
 #### Класс MainPage
 Отрисовывает главное окно.\
 Конструктор принимает контейнер с элементами и инстант брокера событий.\
-Поля класса:\
+Поля класса:
    - _counter: HTMLElement - счетчик количества товаров в заказе
    - _productItemList: HTMLElement - список товаров
    - _wrapper: HTMLElement - контейнер для списка товаров
@@ -284,7 +284,7 @@ interface ISuccessActions {onClick: (event: MouseEvent) => void}
 \
 Конструктор принимает контейнер с элементами и инстант брокера событий.\
 \
-Поля класса:\
+Поля класса:
 - _closeButton: HTMLButtonElement - кнопка закрытия модального окна
 - _content: HTMLElement - контейнер с содержимым модального окна
 
@@ -317,7 +317,6 @@ interface ISuccessActions {onClick: (event: MouseEvent) => void}
 \
 Принимает в конструктор экземпляр класса Api и предоставляет методы реализующие взаимодействие с бэкендом сервиса.\
 getProductItemList() - возвращает промис в виде массива с карточками с сервера
-
 
 ## Взаимодействие компонентов
 Код, описывающий взаимодействие представления и данных между собой находится в файле `index.ts`, выполняющем роль презентера.\
