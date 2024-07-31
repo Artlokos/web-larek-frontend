@@ -1,8 +1,7 @@
-// import { productItemList } from './../components/model/ProductItemsData';
 import { ApiPostMethods } from './../components/base/api';
 import { ProductItem } from '../components/model/AppModel';
 
-//Интерфейс списка товаров
+// Интерфейс списка товаров
 export interface IProductItemListData {
     productItemList: IProductItem[] // - список карточек с сервера
     getProductItem(id:string):IProductItem // - получение данных карточки товара по id
@@ -28,7 +27,7 @@ export interface IOrder {
     payment:string // - способ  оплаты
     total: number // - сумма заказа
 }
-  // Данные о покупателе
+  // Тип данных о покупателе
 export interface ICustomer {
     email: string // - электронная почта покупателя
     phone: string // - телефон покупателя
@@ -48,12 +47,13 @@ export type TOrderContacts = Pick<ICustomer, 'email' | 'phone' | 'payment' | 'ad
 // Данные для проверки полей формы
 export type FormErrors = Partial<Record<keyof ICustomer, string>>
 
-// export type TOrderResponse = Pick<IOrder, 'id'>
-
+// Тип для отправки заказа на сервер
 export interface IOrderResponse {
   id:string
   total:number
 }
+
+// Тип для представления попапа при успешном совершении заказа
 export interface ISuccess {
   totalPrice: number
 }
@@ -65,6 +65,7 @@ export interface IApi {
     post<T>(uri:string, data:object, method?: ApiPostMethods): Promise<T>
 }
 
+//Тип для модели приложения
 export interface IAppModel {
     // Свойства
     productItemList: ProductItem[] // // Массив карточек товара
@@ -84,20 +85,22 @@ export interface IAppModel {
     validateOrder(): boolean // Валидация форм для окошка "заказ"
     refreshOrder(): boolean // Очистить order после покупки товаров
     setProductItemsList(items: IProductItem[]): void // Метод для превращения данных, полученых с сервера в тип данных приложения
-    resetChosen(): void // Метод для обновления поля selected во всех товарах после совершения покупки
+    resetChosen(): void // Метод для обновления поля chosen во всех товарах после совершения покупки
   }
 
+  //Тип для элемента представления главной страницы
 export interface IPage {
     productItemList: HTMLElement[] // - ul для вывода карточек товаров 
     counter:number // - счетчик товаров в заказе
 }
 
+// Типы для выбора категорий товаров
 export type CategoryType =
   | 'другое'
   | 'софт-скил'
   | 'дополнительное'
   | 'кнопка'
-  | 'хард-скил';
+  | 'хард-скил'
 
 export type CategoryArray = {
   [Key in CategoryType]: string
@@ -109,23 +112,22 @@ export const category: CategoryArray = {
 	'дополнительное': 'card__category_additional',
 	'кнопка': 'card__category_button',
 	'хард-скил': 'card__category_hard',
-  };
+  }
 
+// Тип для представления окна заказа
 export interface IOrderList {
     list: HTMLElement[]  
     price: number
   }
 
+// Тип для представления модального окна
+export interface IPopupView{content: HTMLElement}
+
+// Тип для представления формы внутри модальных окон 
+export interface IForm {valid: boolean, errors: string[]}
+
+// Тип для установки кастомных событий
 export interface ICardActions {onClick: (event: MouseEvent) => void}
 
-export interface IPopupView{
-    content: HTMLElement
-  }
-export interface IForm {
-    valid: boolean
-    errors: string[]
-  }
-
-export interface ISuccessActions {
-    onClick: (event: MouseEvent) => void
-  }
+// Тип для представления событий при завершении заказа
+export interface ISuccessActions {onClick: (event: MouseEvent) => void}

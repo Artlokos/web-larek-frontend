@@ -63,7 +63,7 @@ events.on('items:changed', () => {
 
 events.on('card:select', (item: ProductItem) => {
     mainPage.locked = true
-    const product = new ListItem(cloneTemplate(cardPreviewTemplate), {onClick: () => {events.emit('card:toBasket', item)}})
+    const product = new ListItem(cloneTemplate(cardPreviewTemplate), {onClick: () => {events.emit('card:toOrderList', item)}})
     popup.render({
         content: product.render({
         id: item.id,
@@ -74,8 +74,8 @@ events.on('card:select', (item: ProductItem) => {
         price: item.price,
         chosen: item.chosen})})})
 
-events.on('card:toBasket', (item: ProductItem) => {
-    item.chosen = true
+events.on('card:toOrderList', (item: ProductItem) => {
+    if (item.chosen==true) popup.setDisabled(popup.content.querySelector('.card__button'), true)
     appModel.toOrderList(item)
     mainPage.counter = appModel.getItemsInOrderList()
     popup.close()})
@@ -85,13 +85,13 @@ events.on('orderList:delete', (item: ProductItem) => {
     item.chosen = false
     orderList.price = appModel.getTotalPrice()
     mainPage.counter = appModel.getItemsInOrderList()
-    orderList.refreshCountInBasket()
+    orderList.refreshCountInOrderList()
     if (!appModel.orderListItem.length) orderList.disableButton()})
 
 events.on('orderList:open', () => {
     mainPage.locked = true
     const orderItemList = appModel.orderListItem.map((item, index) => {
-      const ListItem = new OrderListItem('card',cloneTemplate(cardBasketTemplate),{onClick: () => events.emit('orderList:delete', item)})
+      const ListItem = new OrderListItem('card', cloneTemplate(cardBasketTemplate),{onClick: () => events.emit('orderList:delete', item)})
         return ListItem.render({
             title: item.title,
             price: item.price,

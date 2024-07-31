@@ -21,62 +21,45 @@ export class ProductItemView extends MainComponent<TProductItemInfo> {
     
         if (actions?.onClick) {
           if (this._button) {
-            this._button.innerHTML="Hello"
+            this._button.innerHTML="Добавить в заказ"
             this._button.addEventListener('click', actions.onClick);
           } else {
             container.addEventListener('click', actions.onClick);
           }
         }
     }
-    set id(value: string) {
-    this.container.dataset.id = value;
-  }
-      get id(): string {
-      return this.container.dataset.id || '';
-  }
+
+  set id(value: string) {this.container.dataset.id = value}
+
+  get id(): string {return this.container.dataset.id || ''}
   
-  set title(value: string) {
-    this._title.textContent = value;
-  }
-  get title(): string {
-    return this._title.textContent || '';
-  }
+  set title(value: string) {this._title.textContent = value}
 
-  set image(value: string) {
-    this._image.src = CDN_URL + value;
-  }
+  get title(): string {return this._title.textContent || ''}
 
-  set selected(value: boolean) {
-    if (!this._button.disabled) {
-      this._button.disabled = value;
-    }
-  }
+  set image(value: string) {this._image.src = CDN_URL + value}
+
+  set chosen(value: boolean) {if (!this._button.disabled) {this._button.disabled = value}}
+
+  disableButton() {this._button.disabled = true}
 
   set price(value: number | null) {
-    this._price.textContent = value
-      ? handlePrice(value) + ' синапсов'
-      : 'Бесценно';
-    if (this._button && !value) {
-      this._button.disabled = true;
-    }
+    this._price.textContent = value ? handlePrice(value) + ' синапсов' : 'Бесценно'
+    if (this._button && !value) {this._button.disabled = true}
   }
  
   set category(value: CategoryType) {
-    this._category.textContent = value;
-    this._category.classList.add(category[value]);
+    this._category.textContent = value
+    this._category.classList.add(category[value])
   }
-
 }
 export class ListItem extends ProductItemView {
-    protected _description: HTMLElement;
+    protected _description: HTMLElement
   
     constructor(container: HTMLElement, actions?:ICardActions) {
-      super('card', container, actions);
-  
-      this._description = container.querySelector(`.${this.nameElement}__text`);
+      super('card', container, actions)
+      this._description = container.querySelector(`.${this.nameElement}__text`)
     }
   
-    set description(value: string) {
-      this._description.textContent = value;
-    }
+    set description(value: string) {this._description.textContent = value}
   }
